@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/16/.claude/skills/ccg/domains/architecture/**)",
+      "Read(//c/Users/16/.claude/skills/ccg/domains/frontend-design/**)",
+      "Read(//c/Users/16/.claude/skills/ccg/domains/development/**)",
+      "Read(//c/Users/16/.claude/skills/ccg/domains/ai/**)",
+      "Bash(git -C \"/d/develop/agent/AnimeUta\" rev-parse --is-inside-work-tree)",
+      "Bash(git -C \"/d/develop/agent/AnimeUta\" log --oneline -n 3)",
+      "Read(//d/develop/agent/AnimeUta/**)",
+      "Bash(git -C \"/d/develop/agent/AnimeUta\" branch --show-current)",
+      "Bash(mkdir -p \"/d/develop/agent/AnimeUta/.context/prefs\" \"/d/develop/agent/AnimeUta/.context/current/branches\" \"/d/develop/agent/AnimeUta/.context/history/archives\")",
+      "Bash(touch \"/d/develop/agent/AnimeUta/.context/current/branches/.gitkeep\" \"/d/develop/agent/AnimeUta/.context/history/archives/.gitkeep\" \"/d/develop/agent/AnimeUta/.context/history/commits.jsonl\")",
+      "Bash(git -C \"/d/develop/agent/AnimeUta\" status --short --branch)",
+      "Bash(git -C \"/d/develop/agent/AnimeUta\" diff --cached)",
+      "Bash(git -C \"/d/develop/agent/AnimeUta\" diff)",
+      "Bash(git -C \"/d/develop/agent/AnimeUta\" log --oneline -n 10)",
+      "Bash(git -C \"/d/develop/agent/AnimeUta\" ls-files --others --exclude-standard)",
+      "Bash(git -C \"/d/develop/agent/AnimeUta\" add \"CLAUDE.md\" \".claude/index.json\" \".context/.gitattributes\" \".context/.gitignore\" \".context/history/archives/.gitkeep\" \".context/history/commits.jsonl\" \".context/history/commits.md\" \".context/prefs/coding-style.md\" \".context/prefs/workflow.md\")",
+      "Bash(git -C \"/d/develop/agent/AnimeUta\" diff --cached --stat)",
+      "Bash(printf \"\\n---FILES---\\n\")",
+      "Bash(git -C \"/d/develop/agent/AnimeUta\" diff --cached --name-only)",
+      "Bash([ -f \"/d/develop/agent/AnimeUta/.context/current/branches/main/session.log\" ])",
+      "Bash(sed -n '1,200p' \"/d/develop/agent/AnimeUta/.context/current/branches/main/session.log\")"
+    ]
+  }
+}
