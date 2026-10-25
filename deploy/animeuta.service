@@ -1,0 +1,29 @@
+[Unit]
+Description=AnimeUta backend
+After=network-online.target
+Wants=network-online.target
+ConditionPathExists=/opt/animeuta/current/backend/dist/server.js
+ConditionPathExists=/opt/animeuta/shared/backend.env
+
+[Service]
+Type=simple
+User=animeuta
+Group=animeuta
+WorkingDirectory=/opt/animeuta/current/backend
+Environment=NODE_ENV=production
+EnvironmentFile=/opt/animeuta/shared/backend.env
+ExecStart=/usr/local/bin/node dist/server.js
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+UMask=0027
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/animeuta/shared/data /opt/animeuta/shared/media
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

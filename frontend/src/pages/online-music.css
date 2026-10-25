@@ -1,0 +1,50 @@
+.online-page { max-width:1200px; margin:auto; color:#eeeef0; }
+.online-heading { display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #ffffff14; padding:8px 0 20px; }
+.online-page h1 { font-size:24px; font-weight:700; }
+.online-page h2 { font-size:16px; font-weight:600; overflow-wrap:anywhere; }
+.online-heading p,.online-page small,.online-footnote { color:#96969f; font-size:12px; }
+.online-page small { display:block; margin-top:5px; overflow-wrap:anywhere; }
+.online-page button,.online-upload { display:inline-flex; gap:7px; align-items:center; justify-content:center; min-height:36px; padding:7px 11px; border-radius:5px; background:#ffffff09; font-size:13px; flex-shrink:0; }
+.online-page button:hover,.online-upload:hover { background:#ffffff16; }
+.online-page button:disabled { opacity:.4; cursor:not-allowed; }
+.online-page button:focus-visible,.online-page select:focus-visible,.online-page input:focus-visible { outline:2px solid #ff6b85; outline-offset:2px; }
+.online-icon { display:inline-grid; place-items:center; width:38px; height:38px; flex-shrink:0; }
+.online-toolbar { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:18px 0; }
+.online-toolbar label { display:flex; align-items:center; gap:8px; font-size:13px; }
+.online-page select { background:#25252b; border:1px solid #ffffff16; border-radius:5px; padding:8px; font-size:13px; max-width:100%; min-width:0; }
+.online-page input[type=checkbox] { accent-color:#ff3b5f; width:16px; height:16px; flex-shrink:0; }
+.online-tabs { display:flex; gap:20px; border-bottom:1px solid #ffffff14; margin:14px 0 24px; }
+.online-tabs button { background:none; border-radius:0; padding:12px 0; border-bottom:2px solid transparent; }
+.online-tabs button[aria-current=page] { color:#ff6b85; border-color:#ff3b5f; }
+.online-search { display:flex; align-items:center; gap:12px; border:1px solid #ffffff20; padding:5px 10px; border-radius:6px; }
+.online-search input { min-width:0; flex:1; background:transparent; outline:none; font-size:14px; }
+.online-search select { max-width:130px; }
+.online-track { display:grid; grid-template-columns:16px 48px minmax(0,1fr) 40px 40px; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid #ffffff0c; }
+.online-track img,.online-art,.online-playlist img { width:48px; height:48px; object-fit:cover; border-radius:4px; }
+.online-art { display:grid; place-items:center; color:#819b9a; background:#ffffff06; }
+.online-track-name { min-width:0; }
+.online-page strong { font-size:14px; font-weight:500; overflow-wrap:anywhere; }
+.online-track-name strong,.online-track-name small { display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.online-source-row,.online-job { display:flex; align-items:center; gap:20px; justify-content:space-between; padding:18px 0; border-bottom:1px solid #ffffff12; }
+.online-source-row>div:first-child,.online-job>div:first-child { min-width:0; flex:1; }
+.online-actions { display:flex; flex-wrap:wrap; gap:7px; align-items:center; }
+.online-page .online-playlist { display:flex; width:100%; justify-content:flex-start; text-align:left; gap:16px; padding:16px 0; background:none; border-bottom:1px solid #ffffff12; }
+.online-playlist span { flex:1; min-width:0; }
+.online-empty { padding:60px 0; text-align:center; color:#92929b; }
+.online-page .online-error { color:#f7a9a9; font-size:13px; margin:12px 0; overflow-wrap:anywhere; }
+.online-notice { color:#a3d7c5; font-size:13px; margin:12px 0; }
+.online-upload { cursor:pointer; }
+.online-upload input { display:none; }
+.online-job progress { display:block; height:4px; width:100%; max-width:400px; margin-top:10px; accent-color:#ff6b85; }
+.online-script { font-size:12px; white-space:pre-wrap; overflow-wrap:anywhere; padding:20px; }
+.online-download-options { padding:20px; display:grid; gap:18px; }
+.online-download-options label { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+@media(max-width:640px){
+ .online-track { grid-template-columns:16px 40px minmax(0,1fr) 36px 36px; gap:6px; }
+ .online-track img,.online-art { width:40px;height:40px; }
+ .online-track>button { padding:6px; }
+ .online-source-row,.online-job { align-items:flex-start;flex-direction:column;gap:12px; }
+ .online-job>div:first-child { width:100%; }
+ .online-search { gap:6px; }
+ .online-search select { max-width:95px; }
+}

@@ -1,0 +1,2 @@
+ALTER TABLE lyric ADD COLUMN timing_offset_ms INTEGER NOT NULL DEFAULT 0
+    CHECK (timing_offset_ms BETWEEN -30000 AND 30000);

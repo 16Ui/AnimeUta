@@ -1,397 +1,65 @@
-# 后端 API V1 设计
-
-## 文档目标
-
-本文档用于定义 AnimeUta 第一版后端 API 清单，作为前后端协作边界。
-
-当前目标是先把接口清单、职责和基本入出参方向定下来，不进入最终代码实现与 OpenAPI 细节。
-
-## 设计原则
-
-### 1. 风格
-- 采用 RESTful 风格
-- 路径使用资源名，不在路径里堆业务动词
-- 返回结构尽量统一
-
-### 2. 版本
-第一版统一挂在：
-- `/api/v1`
-
-### 3. 响应结构建议
-
-成功响应建议：
-
-```json
-{
-  "data": {}
-}
-```
-
-列表响应建议：
-
-```json
-{
-  "data": [],
-  "pagination": {
-    "page": 1,
-    "page_size": 20,
-    "total": 100
-  }
-}
-```
-
-错误响应建议：
-
-```json
-{
-  "error": {
-    "code": "VALIDATION_ERROR",
-    "message": "参数不合法"
-  }
-}
-```
-
-### 4. 多语言内容策略
-- UI 文案由前端 i18n 处理
-- 内容字段由后端直接返回多语言字段
-- 第一版不做“按请求语言只裁剪一个标题字段”的复杂逻辑
-- 第一版优先直接返回 `title_ja`、`title_zh`、`title_en`、`title_romaji`
-
-这样前端更容易接，也更适合你当前边做边学。
-
-## API 模块划分
-
-### `auth`
-负责：
-- 注册
-- 登录
-- 获取当前登录用户
-
-### `user`
-负责：
-- 用户资料查询与更新
-- 语言偏好维护
-
-### `music`
-负责：
-- 歌曲列表
-- 歌曲详情
-- 艺人详情
-- 专辑详情
-
-### `work`
-负责：
-- 作品详情
-- 作品关联歌曲列表
-
-### `favorite`
-负责：
-- 收藏歌曲
-- 取消收藏
-- 获取收藏列表
-
-### `playlist`
-负责：
-- 创建歌单
-- 修改歌单
-- 删除歌单
-- 查询歌单
-- 歌单内歌曲增删改序
-
-### `search`
-负责：
-- 多语言搜索
-- 搜索建议
-- 分类搜索结果
-
-## 一、认证与用户 API
-
-### 1. 注册
-`POST /api/v1/auth/register`
-
-用途：
-- 创建本地账号
-
-请求体建议：
-- `email`
-- `password`
-- `display_name`
-
-响应核心字段：
-- 用户 ID
-- 基础资料
-- 登录凭证（具体采用 JWT 还是 Session 还未最终定）
+# AnimeUta HTTP API V1
 
-### 2. 登录
-`POST /api/v1/auth/login`
+Base URL：`http://127.0.0.1:8080/api/v1`。除 setup、注册、登录、刷新和带签名的媒体读取外，接口需要 `Authorization: Bearer <token>`。
 
-用途：
-- 用户登录
+成功响应通常为 `{ "data": ... }`，分页响应附带 `pagination`。失败响应为 `{ "error": { "code": "...", "message": "..." } }`。
 
-请求体建议：
-- `email`
-- `password`
+## 账号
 
-响应核心字段：
-- 用户信息
-- 登录凭证
-
-### 3. 获取当前用户
-`GET /api/v1/auth/me`
+- `GET /setup/status`
+- `POST /auth/register`、`POST /auth/login`、`POST /auth/refresh`、`POST /auth/logout`
+- `GET /auth/me`、`PATCH /auth/me`、`PATCH /auth/password`
+- `POST /admin/invites`、`GET /admin/users`、`PATCH /admin/users/{id}`
 
-用途：
-- 获取当前登录用户的账户与资料信息
-
-响应核心字段：
-- `user_account`
-- `user_profile`
-
-### 4. 获取用户资料
-`GET /api/v1/users/{id}`
-
-用途：
-- 获取指定用户公开资料
-
-### 5. 更新我的资料
-`PATCH /api/v1/users/me`
+第一个注册账号自动成为 owner；之后默认需要邀请码。
 
-请求体建议：
-- `display_name`
-- `avatar_url`
-- `bio`
-- `preferred_language`
-- `timezone`
+## 导入与歌曲
 
-## 二、歌曲与内容 API
+- `POST /imports/inspect`：multipart，支持 `audio` + 可选 `lyrics_file`/`cover`，或单独 `bundle` ZIP。
+- `POST /imports/{id}/commit`：确认标题和语言并加入私人曲库。
+- `DELETE /imports/{id}`：放弃预览并清理临时文件。
+- `GET /songs`、`GET /songs/{id}`、`GET /songs/{id}/stream?expires=&signature=`。
+- `GET /media/images/{name}?expires=&signature=`：读取歌曲封面、头像和 ACG 实体图片。
+- `POST /me/songs/{id}/share-request`：申请加入共享曲库。
+- `POST /songs/{id}/audio`、`POST /songs/{id}/lyrics`。
+- `GET /artists/{id}`、`GET /works/{id}`、`GET /albums/{id}`。
+- `GET /acg/{kind}/{id}`：创作者、角色、声优、发行商、厂牌和歌曲版本组详情。
 
-### 1. 获取歌曲列表
-`GET /api/v1/songs`
+音频流支持 HTTP Range，音频和图片签名地址默认一小时有效。API 响应会把数据库中的本地图片路径转换为短期签名地址；音频与图片目录均不作为静态目录公开。
 
-用途：
-- 首页歌曲列表
-- 通用歌曲分页列表
+## 歌词与 AI
 
-查询参数建议：
-- `page`
-- `page_size`
-- `sort`
-- `work_id`
-- `artist_id`
-- `album_id`
-- `language_code`
+- `GET /songs/{id}/lyrics`、`GET /songs/{id}/lyrics/versions`。
+- `POST /lyrics/{id}/share-request`、`POST /annotations/{id}/share-request`：由创建者明确提交私人歌词或批注审核。
+- `PATCH /lyrics/{id}/lines`：管理员批量修改原文、翻译、罗马音和毫秒时间。
+- `GET|POST /lyrics/{id}/annotations`。
+- `GET|POST /songs/{id}/lyrics/jobs`。
+- `POST /lyrics/jobs/{id}/retry`。
 
-响应字段建议：
-- 歌曲基础信息
-- 封面
-- 主艺人摘要
-- 作品摘要
-- 是否已收藏（登录态下）
+任务类型：`transcribe`、`translate`、`furigana`、`align`、`annotate`、`tokenize`。AI 返回格式不合法时任务失败并保留错误，不生成伪造结果。普通用户可以在可见的共享歌曲上创建个人任务；非转写任务会先复制为其私人歌词草稿，转写结果也默认私有。普通用户只能查看和重试自己的任务，不同请求者的同类个人任务可以并行；管理员任务维护共享歌词。私人 AI 结果不会自动出现在管理员审核队列，必须由请求者明确提交。任务响应中的 `errorCode` 是供客户端本地化的稳定错误码；`errorMessage` 是管理诊断信息，不应直接作为用户界面文案。
 
-### 2. 获取歌曲详情
-`GET /api/v1/songs/{id}`
+## 学习
 
-用途：
-- 歌曲详情页
+- `GET /songs/{id}/study/words`、`POST /songs/{id}/study/tokenize`。分词接口先用 Kuromoji 提取基本形，再按基本形、读音和词性查询只读 Tomoshi 词典；仅词典未命中或义项有歧义时调用已配置的外部 LLM。响应的 `analysis` 返回本地词典、LLM 与未解析数量。
+- `PATCH /study/lexemes/{id}`：保存当前用户对词语写法、平假名、罗马音、词性、释义和双语例句的私人修正。片假名是服务端词典匹配用内部字段，不作为学习界面的重复读音展示。
+- `POST /study/cards`：在一个事务中将所选词语加入一个或多个词库。
+- `GET|POST /study/decks`、`POST /study/decks/{id}/cards`。
+- `GET|PATCH /study/preferences`。
+- `GET /study/today`、`GET /study/review/next`、`POST /study/reviews`。
 
-响应字段建议：
-- 歌曲基础信息
-- 多语言标题
-- 艺人列表
-- 作品列表
-- 专辑列表
-- 收藏状态
-- 音频来源信息
+词语响应中的学习字段为 `reading`、`readingKatakana`、`romaji`、`partOfSpeech`、`meaningZh`、`meaningEn`、`exampleJa` 和 `exampleZh`；出现位置同时返回原歌词和翻译语境。复习卡的 `source.tokens` 返回例句中各词的原文区间、平假名、罗马音、词性和释义，供三端按分词结果显示逐词注音；`resolutionStatus` 区分已确定、待确认和词典未命中。卡片方向为 `ja_zh` 或 `zh_ja`，评分为 1 忘记、2 困难、3 良好、4 简单。
 
-### 3. 获取艺人详情
-`GET /api/v1/artists/{id}`
+## 个人曲库与搜索
 
-用途：
-- 艺人详情页或艺人聚合信息
+- 收藏：`GET|POST /me/favorites/songs`、`DELETE /me/favorites/songs/{id}`。
+- 历史：`GET|POST /me/play-history`。
+- 歌单：`GET|POST /me/playlists` 及歌曲增删、排序接口；歌单始终属于当前用户，客户端不能创建公共歌单。
+- 搜索：`GET /search`、`GET /search/suggestions`。
+- 搜索结果覆盖歌曲、艺人、作品、专辑、创作者、角色、声优、发行商、厂牌和版本组，并按当前账号的歌曲可见范围过滤。
 
-### 4. 获取作品详情
-`GET /api/v1/works/{id}`
+## 管理
 
-用途：
-- 查看动画 / 游戏作品信息
-- 承载该作品关联歌曲入口
-
-### 5. 获取专辑详情
-`GET /api/v1/albums/{id}`
-
-用途：
-- 查看专辑信息和曲目列表
-
-## 三、搜索 API
-
-### 1. 全局搜索
-`GET /api/v1/search`
-
-用途：
-- 搜索页主入口
-
-查询参数建议：
-- `keyword`
-- `page`
-- `page_size`
-- `type`（可选：song / artist / work / album）
-- `language`
-
-响应建议：
-按类型分组返回：
-- `songs`
-- `artists`
-- `works`
-- `albums`
-
-说明：
-- 第一版先允许后端统一聚合返回
-- 排序规则目前仍是未决问题，文档先保留为后续补充
-
-### 2. 搜索建议
-`GET /api/v1/search/suggestions`
-
-用途：
-- 搜索框联想
-
-查询参数建议：
-- `keyword`
-- `limit`
-
-响应建议：
-- 建议词列表
-- 可附带类型信息
-
-## 四、收藏 API
-
-### 1. 获取我的收藏歌曲列表
-`GET /api/v1/me/favorites/songs`
-
-用途：
-- 收藏页
-
-查询参数建议：
-- `page`
-- `page_size`
-
-### 2. 收藏歌曲
-`POST /api/v1/me/favorites/songs/{songId}`
-
-用途：
-- 将歌曲加入收藏
-
-### 3. 取消收藏歌曲
-`DELETE /api/v1/me/favorites/songs/{songId}`
-
-用途：
-- 取消收藏
-
-## 五、歌单 API
-
-### 1. 获取我的歌单列表
-`GET /api/v1/me/playlists`
-
-### 2. 创建歌单
-`POST /api/v1/me/playlists`
-
-请求体建议：
-- `name`
-- `description`
-- `visibility`
-- `cover_url`
-
-### 3. 获取歌单详情
-`GET /api/v1/playlists/{id}`
-
-### 4. 更新歌单
-`PATCH /api/v1/playlists/{id}`
-
-### 5. 删除歌单
-`DELETE /api/v1/playlists/{id}`
-
-### 6. 向歌单添加歌曲
-`POST /api/v1/playlists/{id}/songs`
-
-请求体建议：
-- `song_id`
-- `position`（可选）
-
-### 7. 从歌单删除歌曲
-`DELETE /api/v1/playlists/{id}/songs/{songId}`
-
-### 8. 调整歌单歌曲顺序
-`PATCH /api/v1/playlists/{id}/songs/reorder`
-
-请求体建议：
-- 排序后的歌曲位置列表
-
-## 六、播放历史 API
-
-### 1. 上报播放历史
-`POST /api/v1/me/play-history`
-
-用途：
-- 播放器上报播放行为
-
-请求体建议：
-- `song_id`
-- `played_at`
-- `play_duration_seconds`
-
-### 2. 获取我的播放历史
-`GET /api/v1/me/play-history`
-
-用途：
-- 最近播放列表
-
-## 七、第一版建议暂不开放的 API
-
-当前先不纳入 V1 主清单：
-- 评论 / 乐评 API
-- 推荐算法 API
-- Agent 对话 API
-- 后台管理录入 API
-- 下载离线 API
-
-## 八、与 PostgreSQL 设计的对应关系
-
-这里顺手帮你建立一点数据库到接口的对应思路。
-
-### 1. 为什么搜索 API 单独成模块
-因为搜索后面会用到 PostgreSQL 的：
-- `ILIKE`
-- `pg_trgm`
-- 可能的全文搜索
-
-所以搜索逻辑不要散落在歌曲、艺人、作品接口里。
-
-### 2. 为什么歌曲详情要聚合返回
-因为数据库里本来就是：
-- `song`
-- `song_artist`
-- `song_work`
-- `album_song`
-
-所以后端详情接口天然就是聚合接口。
-
-### 3. 为什么收藏和歌单走 `/me/` 前缀
-因为这些资源强依赖当前登录用户。
-
-这在接口语义上会比到处传 `user_id` 更清晰。
-
-## 九、当前未决问题
-
-1. 登录凭证最终使用 JWT 还是 Session
-2. 搜索结果排序规则
-3. 歌曲详情里音频来源字段是否直接暴露完整 URI
-4. 收藏范围第一版是否只做歌曲
-5. 歌单是否允许重复歌曲
-6. 是否要在歌曲列表中返回已收藏状态
-
-## 十、下一步建议
-
-在这份 API 文档之后，最适合继续做的是：
-
-1. 选择数据库 migration 工具
-2. 初始化 `backend/` 项目骨架
-3. 按本 API 清单开始定义 Controller / DTO / VO
-4. 初始化 `frontend/`，按页面逐步对接这些接口
+- `GET /admin/song-submissions`、`PATCH /admin/songs/{id}/review`。
+- `PATCH /admin/songs/{id}/metadata`、`DELETE /admin/songs/{id}`。
+- `PATCH /admin/acg/{kind}/{id}`：维护 ACG 实体的多语言名称、图片、简介、官网和别名。
+- `PATCH /lyrics/{id}/review`、`POST /media/images`。上传接口返回稳定的受控存储路径，读取时由响应层生成短期签名地址。

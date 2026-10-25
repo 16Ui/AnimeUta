@@ -1,0 +1,76 @@
+{
+  "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
+  "productName": "AnimeUta",
+  "version": "0.1.14",
+  "identifier": "app.animeuta.desktop",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://127.0.0.1:5174",
+    "beforeDevCommand": "",
+    "beforeBuildCommand": "npm run build"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "AnimeUta",
+        "label": "main",
+        "width": 1440,
+        "height": 900,
+        "minWidth": 1024,
+        "minHeight": 700,
+        "center": true,
+        "resizable": true,
+        "fullscreen": false,
+        "decorations": false,
+        "shadow": true
+      },
+      {
+        "title": "AnimeUta Desktop Lyrics",
+        "label": "desktop-lyrics",
+        "url": "index.html?window=desktop-lyrics",
+        "width": 920,
+        "height": 168,
+        "minWidth": 520,
+        "minHeight": 80,
+        "center": true,
+        "resizable": true,
+        "alwaysOnTop": true,
+        "decorations": false,
+        "transparent": true,
+        "visible": false,
+        "skipTaskbar": true,
+        "shadow": false
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "publisher": "AnimeUta",
+    "shortDescription": "AnimeUta Music & Japanese Learning",
+    "windows": {
+      "nsis": {
+        "languages": ["SimpChinese", "English"],
+        "displayLanguageSelector": false,
+        "installMode": "currentUser",
+        "startMenuFolder": "AnimeUta",
+        "installerIcon": "icons/icon.ico",
+        "uninstallerIcon": "icons/icon.ico",
+        "sidebarImage": "icons/installer-sidebar.bmp"
+      }
+    },
+    "targets": ["nsis"],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "android": {
+      "debugApplicationIdSuffix": ".debug"
+    }
+  }
+}

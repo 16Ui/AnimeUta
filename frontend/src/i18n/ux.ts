@@ -1,0 +1,5 @@
+export const ux = {
+  zh: { more: '更多操作', playbackFailed: '音频加载失败，请检查服务连接或音频文件。', retry: '重试播放', buffering: '正在缓冲', nowPlaying: '正在播放', artwork: '封面', lyrics: '歌词', browseChapters: '选择语法章节', chooseDeck: '选择词库', tabs: { home: '曲库', favorites: '收藏', study: '学习', playlists: '歌单', account: '我的' } },
+  en: { more: 'More actions', playbackFailed: 'Audio could not load. Check the server connection or audio file.', retry: 'Retry playback', buffering: 'Buffering', nowPlaying: 'Now playing', artwork: 'Artwork', lyrics: 'Lyrics', browseChapters: 'Choose a grammar chapter', chooseDeck: 'Choose a deck', tabs: { home: 'Library', favorites: 'Favorites', study: 'Study', playlists: 'Playlists', account: 'Account' } },
+  ja: { more: 'その他の操作', playbackFailed: '音声を読み込めません。サーバー接続または音声ファイルを確認してください。', retry: '再試行', buffering: '読み込み中', nowPlaying: '再生中', artwork: 'ジャケット', lyrics: '歌詞', browseChapters: '文法の章を選択', chooseDeck: '単語帳を選択', tabs: { home: 'ライブラリ', favorites: 'お気に入り', study: '学習', playlists: 'プレイリスト', account: 'マイページ' } },
+}

@@ -1,0 +1,138 @@
+/* Keep the immersive player and transparent desktop lyrics on their own themes. */
+.app-shell, .auth-page, .app-dialog {
+  font-family: Inter, "Segoe UI", "Microsoft YaHei", "Noto Sans JP", sans-serif;
+  letter-spacing: 0;
+  --ui-muted: #a0a0aa;
+  --ui-line: rgb(255 255 255 / 0.075);
+}
+.app-shell:not(.song-route) { background: #131316; }
+.app-shell:not(.song-route) .app-header { background: rgb(19 19 22 / 0.96); border-color: var(--ui-line); }
+.app-sidebar { background: #1a1a1f; }
+.app-sidebar > div > div:first-child { min-height: 64px; flex-shrink: 0; }
+.app-sidebar nav > a { flex-shrink: 0; }
+.app-sidebar nav > a[aria-current="page"] { box-shadow: none; }
+.app-sidebar nav > a:not(.sidebar-playlist)[aria-current="page"] { background: #ff4263; }
+.sidebar-playlists { padding: 20px 12px; }
+.sidebar-section-label { padding: 0 12px 10px; font-size: 11px; color: #92929d; font-weight: 600; }
+.sidebar-playlist { display: flex; align-items: center; gap: 12px; padding: 8px 12px; border-radius: 6px; font-size: 13px; color: #d4d4dc; }
+.sidebar-playlist:hover, .sidebar-playlist[aria-current="page"] { background: rgb(255 255 255 / 0.06); }
+.sidebar-playlist img, .sidebar-cover-placeholder { width: 36px; height: 36px; flex: 0 0 36px; border-radius: 4px; object-fit: cover; }
+.sidebar-cover-placeholder { display: grid; place-items: center; background: #2d3033; color: #8dd8c5; }
+.sidebar-playlist small { color: #91919b; font-size: 11px; }
+.page-outlet { width: 100%; padding-top: 24px; padding-bottom: 28px; }
+.app-main .content-page { min-width: 0; padding-top: 0; }
+.content-page > .page-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.content-page > .page-heading h2 { overflow-wrap: anywhere; }
+.home-page { display: grid; grid-template-columns: minmax(240px, 1fr) minmax(260px, 460px); gap: 22px 28px; }
+.home-page > * { min-width: 0; grid-column: 1 / -1; }
+.home-page:not(.is-searching) > .page-heading { grid-column: 1; align-self: center; }
+.home-page:not(.is-searching) > .library-search { grid-column: 2; }
+.home-page .library-search > form { max-width: none; }
+.page-heading { border-bottom: 0; padding-bottom: 0; }
+.page-heading h2 { font-size: 26px; line-height: 1.35; font-weight: 650; }
+.section-title { font-size: 18px; line-height: 1.5; font-weight: 600; }
+.content-page .text-zinc-500, .app-dialog .text-zinc-500 { color: #9696a2; }
+.content-page .text-zinc-600, .app-dialog .text-zinc-600 { color: #858590; }
+.home-overview { align-items: center; padding-bottom: 20px; gap: 24px; }
+.home-now-playing { grid-template-columns: 112px minmax(0, 1fr); gap: 20px; }
+.home-now-playing h3 { white-space: normal; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; font-size: 20px; line-height: 1.45; }
+.home-now-playing > img { box-shadow: 0 8px 24px rgb(0 0 0 / 0.22); }
+.home-study-summary { max-width: 420px; }
+.home-study-summary svg { color: #8dd8c5; }
+.home-study-summary .study-summary-stats > div:nth-child(1) > p:first-child { color: #8dd8c5; }
+.home-study-summary .study-summary-stats > div:nth-child(2) > p:first-child { color: #e6c788; }
+.cover-shelf { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; }
+.cover-shelf-item { min-width: 0; }
+.cover-shelf-art { position: relative; aspect-ratio: 1; overflow: hidden; border-radius: 6px; background: #27272e; }
+.cover-shelf-art > a { display: block; width: 100%; height: 100%; }
+.cover-shelf-art img { transition: transform 180ms ease; }
+.cover-shelf-art:hover img { transform: scale(1.035); }
+.cover-shelf-art button { position: absolute; right: 10px; bottom: 10px; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: #ff4263; color: white; opacity: 0; transition: opacity 140ms ease; box-shadow: 0 2px 12px #0006; }
+.cover-shelf-art:hover button, .cover-shelf-art:focus-within button { opacity: 1; }
+.cover-shelf-art button:disabled { display: none; }
+.cover-shelf-title { display: block; margin-top: 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; font-weight: 500; line-height: 22px; }
+.cover-shelf-title:hover { color: #ff8298; }
+.cover-shelf-item > p { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #9696a2; font-size: 12px; line-height: 22px; }
+.song-list { border-top: 0; }
+.song-row { min-height: 76px; border-color: rgb(255 255 255 / 0.045); border-radius: 4px; }
+.song-row:nth-child(even) { background: rgb(255 255 255 / 0.018); }
+.song-row:hover, .song-row:focus-within { background: rgb(255 255 255 / 0.055); }
+.song-row .song-row-cover-play > span { color: white; }
+.bulk-toolbar { min-height: 52px; padding-top: 6px; padding-bottom: 10px; border-color: var(--ui-line); }
+.bulk-toolbar.is-selecting { background: #202026; padding: 10px 12px; border-radius: 6px; }
+.primary-button { background: #ff4263; box-shadow: none; }
+.primary-button:hover { background: #ff5976; }
+.secondary-button { background: #27272e; border: 1px solid rgb(255 255 255 / 0.06); }
+.secondary-button:hover { background: #33333a; }
+.content-page :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]), textarea, select),
+.auth-page :is(input:not([type="checkbox"]), select) { border-color: #3b3b44; background-color: #242429; color: #e9e9ed; border-radius: 6px; }
+.app-shell :is(button, a, input, select, textarea):focus-visible,
+.app-dialog :is(button, a, input, select, textarea):focus-visible,
+.auth-page :is(button, a, input, select):focus-visible { outline: 2px solid #f88096; outline-offset: 3px; }
+.app-dialog { background: #202025; border: 1px solid #3a3a42; border-radius: 8px; box-shadow: 0 24px 80px #0008; }
+.app-dialog::backdrop { background: rgb(0 0 0 / 0.66); backdrop-filter: blur(4px); }
+.app-dialog > header { padding: 20px 24px; background: #232329; }
+.app-dialog .dialog-content { scrollbar-gutter: stable; }
+.app-dialog .dialog-content > :is(div, form) { max-width: 100%; }
+.app-dialog :is(.bg-gray-900, .bg-gray-800) { background: #27272e; }
+.study-page > nav { margin-top: 20px; margin-bottom: 20px; }
+.study-page > section { min-width: 0; }
+.study-grammar-split > *, .study-vocabulary-split > * { min-width: 0; }
+.app-dialog .dialog-content { line-height: 1.65; overflow-wrap: anywhere; }
+.app-dialog .dialog-content :is(input, select, textarea) { max-width: 100%; }
+.study-page > nav button[aria-pressed="true"] { color: #ff8da1; background: rgb(255 66 99 / 0.04); }
+.study-page .study-review-card { border-color: #35353f; background: #1b1b20; }
+.auth-page { background: #151518; padding-top: 40px; padding-bottom: 40px; }
+.auth-form-surface { padding: 32px 20px; }
+.auth-form-surface > .grid { border: 0; background: #242429; padding: 4px; gap: 4px; border-radius: 6px; }
+.auth-form-surface > .grid button { border-radius: 4px; background: transparent; color: #aaaab6; }
+.auth-form-surface > .grid .bg-primary { background: #393940; color: white; }
+.auth-form-surface form label:has(input[type="checkbox"]) { border: 0; background: transparent; padding: 2px 0; }
+.auth-form-surface h2 { color: #eeeef2; font-size: 22px; }
+.auth-form-surface form input:not([type="checkbox"]) { min-height: 46px; padding-left: 12px; }
+.auth-form-surface form > button[type="submit"] { min-height: 46px; color: white; border-radius: 6px; }
+@media (max-width: 1199px) and (min-width: 768px) {
+  .cover-shelf { grid-template-columns: repeat(6, minmax(128px, 1fr)); overflow-x: auto; padding-bottom: 8px; }
+  .home-page { grid-template-columns: minmax(200px, 1fr) minmax(240px, 1fr); gap: 20px; }
+  .home-overview { grid-template-columns: minmax(0, 1.2fr) minmax(230px, 1fr); }
+  .home-study-summary { border-top: 0; border-left: 1px solid var(--ui-line); padding-top: 0; padding-left: 20px; }
+  .home-now-playing { grid-template-columns: 88px minmax(0, 1fr); gap: 14px; }
+  .home-now-playing .primary-button, .home-now-playing .secondary-button { padding-left: 10px; padding-right: 10px; }
+}
+@media (min-width: 768px) and (max-width: 900px) {
+  .home-overview { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .home-study-summary { max-width: none; border-left: 0; border-top: 1px solid var(--ui-line); padding: 16px 0 0; }
+  .home-study-summary .study-summary-progress { display: none; }
+  .home-study-summary .study-summary-stats { margin-top: 10px; }
+}
+@media (max-width: 767px) {
+  .page-outlet { padding-top: 18px; }
+  .home-page { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .home-page:not(.is-searching) > .library-search { grid-column: 1; }
+  .page-heading h2 { font-size: 22px; }
+  .home-overview { gap: 16px; padding-bottom: 16px; }
+  .home-now-playing { grid-template-columns: 80px minmax(0, 1fr); gap: 14px; }
+  .home-now-playing h3 { font-size: 18px; }
+  .cover-shelf { grid-template-columns: repeat(6, 112px); overflow-x: auto; gap: 12px; padding-bottom: 8px; scroll-snap-type: x proximity; }
+  .cover-shelf-item { scroll-snap-align: start; }
+  .cover-shelf-art button { opacity: 1; width: 36px; height: 36px; right: 8px; bottom: 8px; }
+  .song-row { gap: 8px; min-height: 72px; }
+  .song-row-tools { gap: 0; }
+  .song-row-title { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; white-space: normal; overflow-wrap: anywhere; line-height: 1.5; }
+  .bulk-toolbar { gap: 6px; }
+  .bulk-toolbar.is-selecting { padding: 10px 8px; }
+  .app-dialog { border-radius: 8px 8px 0 0; }
+  .app-dialog > header { padding: 16px 20px; }
+  .home-study-summary { max-width: none; }
+}
+@media (max-width: 380px) {
+  .song-row-tools { grid-column: 1 / -1; justify-content: flex-end; }
+  .song-row-copy { grid-column: 2 / -1; }
+  .song-row:has(.song-row-rank input) .song-row-copy { grid-column: 3 / -1; }
+  .song-row { row-gap: 0; }
+  .home-now-playing .primary-button, .home-now-playing .secondary-button { padding-left: 10px; padding-right: 10px; }
+}
+.cover-shelf.public-playlist-shelf { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 160px; overflow-x: auto; padding-bottom: 8px; }
+@media (max-width: 640px) { .cover-shelf.public-playlist-shelf { grid-auto-columns: 128px; } }
+@media (hover: none) { .cover-shelf-art button { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .cover-shelf-art img { transition: none; } }

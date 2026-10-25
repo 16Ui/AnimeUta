@@ -1,64 +1,27 @@
-# 仓库目录结构
-
-## 目标
-
-本文档将 AnimeUta 的目录规划正式化，用于指导后续项目骨架创建与模块落地。
-
-## 根目录结构
+# 仓库结构
 
 ```text
 AnimeUta/
-├─ frontend/                # React Web 用户端
-├─ backend/                 # Spring Boot + MyBatis-Plus 服务端
-├─ docs/                    # 正式设计文档与架构决策
-├─ .context/                # 开发决策上下文与提交历史
-├─ .claude/                 # AI 工具索引与本地配置
-├─ agent-service/           # 后续独立 AI / Agent 服务
-├─ mobile-app/              # 后续 React Native Android 客户端
-└─ CLAUDE.md                # 项目蓝图摘要与 AI 快速上下文
+  backend/                  # TypeScript + Fastify + SQLite 唯一后端
+    src/migrations/         # 顺序执行的 SQLite 迁移
+    src/routes/             # REST 路由
+    data/                   # 本地数据库与媒体，忽略提交
+  frontend/                 # Web、Tauri Windows 与 Capacitor 共享 React UI
+    src/api/                # API 客户端
+    src/components/         # 播放器、音乐、学习组件
+    src/pages/              # 用户与管理页面
+    src-tauri/              # Tauri 2 Windows 桌面客户端
+    android/                # Capacitor Android 工程
+    ios/                    # Capacitor iOS 工程
+  docs/                     # 当前产品、架构、数据和 API 规范
+  scripts/                  # Windows 一键启停、构建、清理、备份与恢复
+  artifacts/                # Windows 客户端、安装包与 APK，忽略提交
+  .build-cache/             # Gradle 等可再生成的编译缓存，忽略提交
+  .codex-runtime/           # 本地进程 PID、日志及验收临时文件，忽略提交
 ```
 
-## 第一阶段必须创建的目录
+仓库只保留 `backend/` 这一套正式后端。旧 Go + PostgreSQL 实现已经在迁移验证完成后移除；后端源码、SQLite 迁移和运行脚本不得再分叉出第二条实现。
 
-### `frontend/`
-职责：
-- 承载首页、搜索页、歌曲详情页、登录页、收藏页
-- 承载全局底部播放器
-- 承载三语界面与前端状态管理
+运行时数据位于 `backend/data/`，不得提交。生产部署至少备份 SQLite 数据库、媒体目录和 `.env`。
 
-### `backend/`
-职责：
-- 提供鉴权、用户、歌曲、作品、专辑、收藏、歌单、搜索 API
-- 承载 PostgreSQL 数据访问逻辑
-- 承载搜索聚合与业务规则
-
-### `docs/`
-职责：
-- 作为正式规格文档目录
-- 用于承载结构设计、数据库设计、API 规划与 ADR
-
-## 后续保留但暂不落地的目录
-
-### `agent-service/`
-- 第一阶段只保留扩展位
-- 后续用于承载元数据补全、自然语言搜索、内容生成等能力
-- 不在 MVP 中实际创建代码骨架
-
-### `mobile-app/`
-- 第一阶段只保留扩展位
-- 后续使用 React Native 进行 Android 客户端开发
-- 不纳入当前 MVP 落地范围
-
-## 目录落地原则
-
-1. 先做 `frontend/`、`backend/`、`docs/`
-2. 不为未来需求过早创建大量空目录
-3. 结构以“够清晰、够扩展”为目标，不做过度设计
-4. `CLAUDE.md` 保留蓝图摘要，`docs/` 承担正式规范职责
-
-## 当前执行结论
-
-本阶段正式认定：
-- 一期主线目录：`frontend/`、`backend/`、`docs/`
-- 后续扩展目录：`agent-service/`、`mobile-app/`
-- 目录结构以 MVP 闭环优先，不提前引入额外基础设施目录
+Android SDK 与 JDK 属于机器级工具链，保留在项目外；项目产生的编译缓存和最终 APK 分别收敛到 `.build-cache/` 与 `artifacts/`。执行 `scripts/clean.ps1` 可删除所有可再生成的编译目录，同时默认保留依赖、业务数据和最终交付物。

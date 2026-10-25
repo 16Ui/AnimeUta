@@ -1,0 +1,26 @@
+name: Source Checks
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: |
+            backend/package-lock.json
+            frontend/package-lock.json
+      - run: npm ci --prefix backend
+      - run: npm ci --prefix frontend
+      - run: npm --prefix backend test
+      - run: npm --prefix backend run build
+      - run: npm --prefix frontend run build
+      - run: node --test scripts/player-media.test.mjs frontend/tests/online-music.test.mjs

@@ -10,4 +10,12 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  server: {
+    proxy: process.env.ANIMEUTA_PREVIEW_API ? {
+      '/api': { target: process.env.ANIMEUTA_PREVIEW_API, changeOrigin: true },
+    } : undefined,
+    watch: {
+      ignored: ['**/src-tauri/**'],
+    },
+  },
 })
